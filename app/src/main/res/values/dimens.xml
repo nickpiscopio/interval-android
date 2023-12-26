@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="elevation_2">2dp</dimen>
+    <dimen name="dimen_14">14dp</dimen>
+    <dimen name="dimen_24">24dp</dimen>
+    <dimen name="corner_radius">50dp</dimen>
+</resources>
