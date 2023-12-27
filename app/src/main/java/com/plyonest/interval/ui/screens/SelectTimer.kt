@@ -16,6 +16,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.plyonest.interval.AppScreen
 import com.plyonest.interval.constant.COLOR_BACKGROUND_SCREEN
 import com.plyonest.interval.constant.COLOR_BLACK_80
 import com.plyonest.interval.ui.fragments.IntervalButtonPrimary
@@ -23,15 +26,20 @@ import com.plyonest.interval.ui.theme.IntervalTheme
 
 @Composable
 fun SelectTimer(
-    viewModel: SelectTimerViewModel = viewModel(),
-    onCreateTimerClicked: () -> Unit
+    navController: NavHostController,
+    viewModel: SelectTimerViewModel = viewModel()
 ) {
     if (viewModel.hasTimers()) {
-        TimersView(viewModel = viewModel, onCreateTimerClicked = onCreateTimerClicked)
+        TimersView(viewModel = viewModel) {
+            viewModel.onCreateTimerClicked(navController)
+        }
+
         return
     }
 
-    NoTimersView(viewModel = viewModel, onCreateTimerClicked = onCreateTimerClicked)
+    NoTimersView(viewModel = viewModel) {
+        viewModel.onCreateTimerClicked(navController)
+    }
 }
 
 @Composable
@@ -86,6 +94,9 @@ private fun NoTimersView(
 }
 
 class SelectTimerViewModel: ViewModel() {
+    fun onCreateTimerClicked(navController: NavHostController) {
+        navController.navigate(AppScreen.TIMER_CREATE.name)
+    }
     fun hasTimers(): Boolean {
         return true
     }
@@ -95,6 +106,6 @@ class SelectTimerViewModel: ViewModel() {
 @Composable
 fun PreviewSelectTimer() {
     IntervalTheme {
-        SelectTimer { }
+        SelectTimer(navController = rememberNavController())
     }
 }
