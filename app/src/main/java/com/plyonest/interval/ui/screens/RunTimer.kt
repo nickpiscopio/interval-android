@@ -4,6 +4,7 @@ import com.plyonest.interval.R
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,7 +17,9 @@ import com.plyonest.interval.ui.theme.IntervalTheme
 @Composable
 fun RunTimer() {
     Column(
-        modifier = Modifier.padding(all = dimensionResource(id = R.dimen.dimen_14)),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(all = dimensionResource(id = R.dimen.dimen_15)),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

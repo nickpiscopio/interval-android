@@ -2,11 +2,11 @@ package com.plyonest.interval
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
 import com.plyonest.interval.ui.screens.CreateTimer
 import com.plyonest.interval.ui.screens.RunTimer
 import com.plyonest.interval.ui.screens.SelectTimer
@@ -35,7 +36,7 @@ fun NavBar(
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = { currentScreen.title?.let { Text(stringResource(currentScreen.title)) } },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -84,7 +85,15 @@ fun App (
             composable(route = AppScreen.TIMER_SELECT.name) {
                 SelectTimer(
                     onCreateTimerClicked = {
-                        navController.navigate(AppScreen.TIMER_CREATE.name)
+                        navController.navigate(
+                            route = AppScreen.TIMER_CREATE.name,
+                            navOptions = navOptions {
+                                anim {
+                                    enter = android.R.anim.slide_in_left
+                                    exit = android.R.anim.slide_out_right
+                                }
+                            }
+                        )
                     }
                 )
             }
