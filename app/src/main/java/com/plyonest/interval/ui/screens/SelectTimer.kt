@@ -15,7 +15,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.plyonest.interval.AppScreen
@@ -26,26 +25,20 @@ import com.plyonest.interval.ui.theme.IntervalTheme
 
 @Composable
 fun SelectTimer(
-    navController: NavHostController,
-    viewModel: SelectTimerViewModel = viewModel()
+    viewModel: SelectTimerViewModel
 ) {
     if (viewModel.hasTimers()) {
-        TimersView(viewModel = viewModel) {
-            viewModel.onCreateTimerClicked(navController)
-        }
+        TimersView(viewModel = viewModel)
 
         return
     }
 
-    NoTimersView(viewModel = viewModel) {
-        viewModel.onCreateTimerClicked(navController)
-    }
+    NoTimersView(viewModel = viewModel)
 }
 
 @Composable
 private fun TimersView(
-    viewModel: SelectTimerViewModel,
-    onCreateTimerClicked: () -> Unit
+    viewModel: SelectTimerViewModel
 ) {
     Column(
         modifier = Modifier
@@ -63,15 +56,16 @@ private fun TimersView(
 
         IntervalButtonPrimary(
             text = stringResource(id = R.string.screen_select_timer_cta_title),
-            onClick = onCreateTimerClicked
+            onClick = {
+                viewModel.onCreateTimerClicked()
+            }
         )
     }
 }
 
 @Composable
 private fun NoTimersView(
-    viewModel: SelectTimerViewModel,
-    onCreateTimerClicked: () -> Unit
+    viewModel: SelectTimerViewModel
 ) {
     Column(
         modifier = Modifier
@@ -88,13 +82,17 @@ private fun NoTimersView(
 
         IntervalButtonPrimary(
             text = stringResource(id = R.string.screen_select_timer_cta_title),
-            onClick = onCreateTimerClicked
+            onClick = {
+                viewModel.onCreateTimerClicked()
+            }
         )
     }
 }
 
-class SelectTimerViewModel: ViewModel() {
-    fun onCreateTimerClicked(navController: NavHostController) {
+class SelectTimerViewModel(
+    private var navController: NavHostController
+): ViewModel() {
+    fun onCreateTimerClicked() {
         navController.navigate(AppScreen.TIMER_CREATE.name)
     }
     fun hasTimers(): Boolean {
@@ -106,6 +104,6 @@ class SelectTimerViewModel: ViewModel() {
 @Composable
 fun PreviewSelectTimer() {
     IntervalTheme {
-        SelectTimer(navController = rememberNavController())
+        SelectTimer(SelectTimerViewModel(rememberNavController()))
     }
 }

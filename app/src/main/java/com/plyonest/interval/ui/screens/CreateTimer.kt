@@ -22,6 +22,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.plyonest.interval.AppScreen
 import com.plyonest.interval.constant.COLOR_BACKGROUND_SCREEN
 import com.plyonest.interval.constant.COLOR_BLACK_20
 import com.plyonest.interval.constant.COLOR_BLACK_80
@@ -31,8 +34,7 @@ import com.plyonest.interval.ui.theme.IntervalTheme
 
 @Composable
 fun CreateTimer(
-    viewModel: CreateTimerViewModel = CreateTimerViewModel(),
-    onStartClicked: () -> Unit
+    viewModel: CreateTimerViewModel
 ) {
     Column(
         modifier = Modifier
@@ -47,14 +49,13 @@ fun CreateTimer(
             color = COLOR_BLACK_80
         )
 
-        CreateTimerDetails(viewModel = viewModel, onStartClicked = onStartClicked)
+        CreateTimerDetails(viewModel = viewModel)
     }
 }
 
 @Composable
 private fun CreateTimerDetails(
-    viewModel: CreateTimerViewModel,
-    onStartClicked: () -> Unit
+    viewModel: CreateTimerViewModel
 ) {
     Column(
         modifier = Modifier
@@ -63,7 +64,7 @@ private fun CreateTimerDetails(
     ) {
         CreateTimerDetailsInputs(viewModel = viewModel)
         Divider(color = COLOR_BLACK_20, thickness = 1.dp)
-        CreateTimerDetailsButtons(viewModel = viewModel, onStartClicked = onStartClicked)
+        CreateTimerDetailsButtons(viewModel = viewModel)
     }
 }
 
@@ -94,8 +95,7 @@ private fun CreateTimerDetailsInputs(
 
 @Composable
 private fun CreateTimerDetailsButtons(
-    viewModel: CreateTimerViewModel,
-    onStartClicked: () -> Unit
+    viewModel: CreateTimerViewModel
 ) {
     Row {
         IntervalButtonPrimary(
@@ -118,21 +118,29 @@ private fun CreateTimerDetailsButtons(
 
             IntervalButtonPrimary(
                 text = stringResource(id = R.string.screen_create_timer_start_title),
-                onClick = onStartClicked
+                onClick = {
+                    viewModel.onStartClicked()
+                }
             )
         }
     }
 }
 
-class CreateTimerViewModel: ViewModel() {
+class CreateTimerViewModel(
+    private var navController: NavHostController
+): ViewModel() {
     var name by mutableStateOf("")
     var rounds by mutableStateOf("")
+
+    fun onStartClicked() {
+        navController.navigate(AppScreen.TIMER_RUN.name)
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewCreateTimer() {
     IntervalTheme {
-        CreateTimer { }
+        CreateTimer(viewModel = CreateTimerViewModel(rememberNavController()))
     }
 }

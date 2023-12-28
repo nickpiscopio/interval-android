@@ -18,8 +18,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.plyonest.interval.ui.screens.CreateTimer
+import com.plyonest.interval.ui.screens.CreateTimerViewModel
 import com.plyonest.interval.ui.screens.RunTimer
+import com.plyonest.interval.ui.screens.RunTimerViewModel
 import com.plyonest.interval.ui.screens.SelectTimer
+import com.plyonest.interval.ui.screens.SelectTimerViewModel
 
 enum class AppScreen(@StringRes val title: Int? = null) {
     TIMER_SELECT(title = R.string.screen_select_timer_title),
@@ -78,17 +81,13 @@ fun MainCompose (
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(route = AppScreen.TIMER_SELECT.name) {
-                SelectTimer(navController = navController)
+                SelectTimer(SelectTimerViewModel(navController))
             }
             composable(route = AppScreen.TIMER_CREATE.name) {
-                CreateTimer(
-                    onStartClicked = {
-                        navController.navigate(AppScreen.TIMER_RUN.name)
-                    }
-                )
+                CreateTimer(CreateTimerViewModel(navController))
             }
             composable(route = AppScreen.TIMER_RUN.name) {
-                RunTimer()
+                RunTimer(RunTimerViewModel(navController))
             }
         }
     }

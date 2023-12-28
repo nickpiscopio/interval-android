@@ -12,10 +12,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.plyonest.interval.ui.theme.IntervalTheme
 
 @Composable
-fun RunTimer() {
+fun RunTimer(
+    viewModel: RunTimerViewModel
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -29,10 +34,16 @@ fun RunTimer() {
     }
 }
 
+class RunTimerViewModel(
+    private var navController: NavHostController
+): ViewModel() {
+
+}
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewRunTimer() {
     IntervalTheme {
-        RunTimer()
+        RunTimer(RunTimerViewModel(rememberNavController()))
     }
 }
