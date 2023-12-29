@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.plyonest.interval.constant.DIMEN_25
 import com.plyonest.interval.ui.theme.IntervalTheme
 
 @Composable
@@ -24,7 +25,7 @@ fun RunTimer(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(all = dimensionResource(id = R.dimen.dimen_15)),
+            .padding(all = DIMEN_25),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

@@ -1,19 +1,26 @@
 package com.plyonest.interval.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import com.plyonest.interval.R
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,11 +33,19 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.plyonest.interval.AppScreen
 import com.plyonest.interval.constant.COLOR_BACKGROUND_SCREEN
+import com.plyonest.interval.constant.COLOR_BLACK_100
 import com.plyonest.interval.constant.COLOR_BLACK_20
 import com.plyonest.interval.constant.COLOR_BLACK_80
 import com.plyonest.interval.constant.COLOR_WHITE_100
+import com.plyonest.interval.constant.CORNER_RADIUS_TEXT_FIELD
+import com.plyonest.interval.constant.DIMEN_10
+import com.plyonest.interval.constant.DIMEN_15
+import com.plyonest.interval.constant.DIMEN_20
+import com.plyonest.interval.constant.DIMEN_25
 import com.plyonest.interval.ui.fragments.IntervalButtonPrimary
+import com.plyonest.interval.ui.fragments.IntervalTextField
 import com.plyonest.interval.ui.theme.IntervalTheme
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun CreateTimer(
@@ -40,7 +55,6 @@ fun CreateTimer(
         modifier = Modifier
             .fillMaxSize()
             .background(COLOR_BACKGROUND_SCREEN),
-//            .padding(all = dimensionResource(id = R.dimen.dimen_14)),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
@@ -60,9 +74,11 @@ private fun CreateTimerDetails(
     Column(
         modifier = Modifier
             .background(COLOR_WHITE_100)
-            .padding(all = dimensionResource(id = R.dimen.dimen_15)),
+            .padding(all = DIMEN_25),
+        verticalArrangement = Arrangement.spacedBy(DIMEN_25)
     ) {
         CreateTimerDetailsInputs(viewModel = viewModel)
+        CreateTimerDetailsTotalTime(viewModel = viewModel)
         Divider(color = COLOR_BLACK_20, thickness = 1.dp)
         CreateTimerDetailsButtons(viewModel = viewModel)
     }
@@ -72,22 +88,47 @@ private fun CreateTimerDetails(
 private fun CreateTimerDetailsInputs(
     viewModel: CreateTimerViewModel
 ) {
-    Column(
-        modifier = Modifier
-            .padding(all = dimensionResource(id = R.dimen.dimen_15)),
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(DIMEN_15)
     ) {
+        IntervalTextField(
+            modifier = Modifier.weight(2f),
+            text = viewModel.name,
+            placeholder = stringResource(id = R.string.screen_create_timer_name_title)
+        )
 
-        Row() {
-            OutlinedTextField(
-                value = viewModel.name,
-                onValueChange = { viewModel.name = it },
-                label = { Text("Name") }
+        IntervalTextField(
+            modifier = Modifier.weight(1f),
+            text = viewModel.rounds,
+            placeholder = stringResource(id = R.string.screen_create_timer_rounds_title),
+            includePrefix = true
+        )
+    }
+}
+
+@Composable
+private fun CreateTimerDetailsTotalTime(
+    viewModel: CreateTimerViewModel
+) {
+
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(DIMEN_15)
+    ) {
+        Spacer(modifier = Modifier.weight(2f))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = stringResource(id = R.string.screen_create_timer_time_title),
+                color = COLOR_BLACK_80
             )
 
-            OutlinedTextField(
-                value = viewModel.rounds,
-                onValueChange = { viewModel.rounds = it },
-                label = { Text("Rounds") }
+            Text(
+                text = viewModel.totalTime,
+                color = COLOR_BLACK_80
             )
         }
     }
@@ -97,7 +138,11 @@ private fun CreateTimerDetailsInputs(
 private fun CreateTimerDetailsButtons(
     viewModel: CreateTimerViewModel
 ) {
-    Row {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+        ) {
         IntervalButtonPrimary(
             text = "Delete",
             onClick = {
@@ -106,7 +151,7 @@ private fun CreateTimerDetailsButtons(
         )
 
         Row(
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.spacedBy(DIMEN_10)
         ) {
 
             IntervalButtonPrimary(
@@ -129,10 +174,13 @@ private fun CreateTimerDetailsButtons(
 class CreateTimerViewModel(
     private var navController: NavHostController
 ): ViewModel() {
-    var name by mutableStateOf("")
-    var rounds by mutableStateOf("")
+    var name: MutableState<String> = mutableStateOf("")
+    var rounds: MutableState<String> = mutableStateOf("")
+    var totalTime by mutableStateOf("0s")
 
     fun onStartClicked() {
+        Log.d("Interval", name.value)
+        Log.d("Interval", rounds.value)
         navController.navigate(AppScreen.TIMER_RUN.name)
     }
 }

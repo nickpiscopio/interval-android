@@ -1,9 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="elevation_2">2dp</dimen>
-    <dimen name="dimen_1">1dp</dimen>
-    <dimen name="dimen_15">15dp</dimen>
-    <dimen name="dimen_20">20dp</dimen>
-    <dimen name="dimen_25">25dp</dimen>
-    <dimen name="corner_radius">50dp</dimen>
 </resources>

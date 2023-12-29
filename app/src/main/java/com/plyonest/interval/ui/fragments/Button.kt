@@ -12,11 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.plyonest.interval.R
 import com.plyonest.interval.constant.COLOR_BLACK_40
 import com.plyonest.interval.constant.COLOR_BLUE_100
+import com.plyonest.interval.constant.DIMEN_15
+import com.plyonest.interval.constant.DIMEN_25
 
 @Composable
 fun IntervalButtonPrimary(
@@ -52,8 +52,8 @@ fun IntervalButton(
                     COLOR_BLACK_40
                 )))
                 .padding(
-                    horizontal = dimensionResource(id = R.dimen.dimen_25),
-                    vertical = dimensionResource(id = R.dimen.dimen_15)
+                    horizontal = DIMEN_25,
+                    vertical = DIMEN_15
                 ),
             contentAlignment = Alignment.Center
         ) {

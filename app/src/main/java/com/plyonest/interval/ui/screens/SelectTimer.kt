@@ -20,6 +20,8 @@ import androidx.navigation.compose.rememberNavController
 import com.plyonest.interval.AppScreen
 import com.plyonest.interval.constant.COLOR_BACKGROUND_SCREEN
 import com.plyonest.interval.constant.COLOR_BLACK_80
+import com.plyonest.interval.constant.DIMEN_15
+import com.plyonest.interval.constant.DIMEN_20
 import com.plyonest.interval.ui.fragments.IntervalButtonPrimary
 import com.plyonest.interval.ui.theme.IntervalTheme
 
@@ -44,14 +46,14 @@ private fun TimersView(
         modifier = Modifier
             .fillMaxSize()
             .background(COLOR_BACKGROUND_SCREEN)
-            .padding(all = dimensionResource(id = R.dimen.dimen_15)),
+            .padding(all = DIMEN_15),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text(
             text = stringResource(id = R.string.screen_select_timer_no_timers_title),
             color = COLOR_BLACK_80,
-            modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.dimen_20))
+            modifier = Modifier.padding(bottom = DIMEN_20)
         )
 
         IntervalButtonPrimary(
@@ -71,9 +73,9 @@ private fun NoTimersView(
         modifier = Modifier
             .fillMaxSize()
             .background(COLOR_BACKGROUND_SCREEN)
-            .padding(all = dimensionResource(id = R.dimen.dimen_15)),
+            .padding(all = DIMEN_15),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.dimen_20))
+        verticalArrangement = Arrangement.spacedBy(DIMEN_20)
     ) {
         Text(
             text = stringResource(id = R.string.screen_select_timer_no_timers_title),
