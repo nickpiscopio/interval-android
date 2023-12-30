@@ -4,19 +4,24 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.plyonest.interval.constant.COLOR_BLACK_40
 import com.plyonest.interval.constant.COLOR_BLUE_100
+import com.plyonest.interval.constant.CORNER_RADIUS_BUTTON
 import com.plyonest.interval.constant.DIMEN_15
 import com.plyonest.interval.constant.DIMEN_25
+import com.plyonest.interval.constant.ELEVATION_SHADOW
 
 @Composable
 fun IntervalButtonPrimary(
@@ -39,11 +44,12 @@ fun IntervalButton(
     onClick: () -> Unit
 ) {
     Button(
+        modifier = Modifier.shadow(ELEVATION_SHADOW, RoundedCornerShape(CORNER_RADIUS_BUTTON)),
         colors = ButtonDefaults.buttonColors(
             containerColor = buttonColor
         ),
         contentPadding = PaddingValues(),
-        onClick = { onClick() })
+    onClick = { onClick() })
     {
         Box(
             modifier = Modifier
@@ -61,38 +67,6 @@ fun IntervalButton(
         }
     }
 }
-//fun IntervalButton(text: String, onClick: () -> Unit) {
-//    Button(
-//        colors = ButtonDefaults.buttonColors(
-//            containerColor = Color.Transparent
-//        ),
-//        onClick = onClick
-//    ) {
-//        Box(modifier = Modifier
-//            .background(Brush.linearGradient(colors = listOf(
-//                Color.Blue,
-//                Color.Green
-//            )))
-//            .shadow(elevation = dimensionResource(id = R.dimen.elevation_2))
-//            .clip(shape = RoundedCornerShape(dimensionResource(R.dimen.corner_radius), dimensionResource(
-//                R.dimen.corner_radius), dimensionResource(R.dimen.corner_radius), dimensionResource(
-//                R.dimen.corner_radius))),
-//            contentAlignment = Alignment.Center
-//        )
-//        {
-//            Text(
-//                text = text,
-//                color = Color.White,
-//                modifier = Modifier
-//                    .padding(
-//                        vertical = dimensionResource(id = R.dimen.dimen_14),
-//                        horizontal = dimensionResource(id = R.dimen.dimen_24)
-//                    )
-//
-//            )
-//        }
-//    }
-//}
 
 @Preview(showBackground = true)
 @Composable

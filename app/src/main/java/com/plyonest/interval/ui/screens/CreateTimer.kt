@@ -19,6 +19,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -33,19 +34,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.plyonest.interval.AppScreen
 import com.plyonest.interval.constant.COLOR_BACKGROUND_SCREEN
-import com.plyonest.interval.constant.COLOR_BLACK_100
 import com.plyonest.interval.constant.COLOR_BLACK_20
 import com.plyonest.interval.constant.COLOR_BLACK_80
 import com.plyonest.interval.constant.COLOR_WHITE_100
-import com.plyonest.interval.constant.CORNER_RADIUS_TEXT_FIELD
 import com.plyonest.interval.constant.DIMEN_10
 import com.plyonest.interval.constant.DIMEN_15
-import com.plyonest.interval.constant.DIMEN_20
 import com.plyonest.interval.constant.DIMEN_25
 import com.plyonest.interval.ui.fragments.IntervalButtonPrimary
+import com.plyonest.interval.ui.fragments.IntervalInput
 import com.plyonest.interval.ui.fragments.IntervalTextField
 import com.plyonest.interval.ui.theme.IntervalTheme
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun CreateTimer(
@@ -58,10 +56,21 @@ fun CreateTimer(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(
-            text = stringResource(id = R.string.screen_select_timer_no_timers_title),
-            color = COLOR_BLACK_80
-        )
+        Column(
+            modifier = Modifier
+                .padding(all = DIMEN_25),
+            verticalArrangement = Arrangement.spacedBy(DIMEN_10)
+        ) {
+            IntervalInput(
+                placeholder = stringResource(id = R.string.screen_create_timer_interval_high_title),
+                intervalTimeInMillis = viewModel.highIntervalTime
+            )
+
+            IntervalInput(
+                placeholder = stringResource(id = R.string.screen_create_timer_interval_low_title),
+                intervalTimeInMillis = viewModel.lowIntervalTime
+            )
+        }
 
         CreateTimerDetails(viewModel = viewModel)
     }
@@ -174,6 +183,8 @@ private fun CreateTimerDetailsButtons(
 class CreateTimerViewModel(
     private var navController: NavHostController
 ): ViewModel() {
+    var highIntervalTime: MutableState<Long> = mutableLongStateOf(0)
+    var lowIntervalTime: MutableState<Long> = mutableLongStateOf(0)
     var name: MutableState<String> = mutableStateOf("")
     var rounds: MutableState<String> = mutableStateOf("")
     var totalTime by mutableStateOf("0s")
