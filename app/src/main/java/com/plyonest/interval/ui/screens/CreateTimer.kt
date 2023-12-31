@@ -62,12 +62,12 @@ fun CreateTimer(
             verticalArrangement = Arrangement.spacedBy(DIMEN_10)
         ) {
             IntervalInput(
-                placeholder = stringResource(id = R.string.screen_create_timer_interval_high_title),
+                name = stringResource(id = R.string.screen_create_timer_interval_high_title),
                 intervalTimeInMillis = viewModel.highIntervalTime
             )
 
             IntervalInput(
-                placeholder = stringResource(id = R.string.screen_create_timer_interval_low_title),
+                name = stringResource(id = R.string.screen_create_timer_interval_low_title),
                 intervalTimeInMillis = viewModel.lowIntervalTime
             )
         }
