@@ -12,6 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
+import com.plyonest.interval.data.Navigator
+import com.plyonest.interval.data.TimerState
 import com.plyonest.interval.domain.interfaces.TimerStateInterface
 import com.plyonest.interval.presentation.constant.DIMEN_25
 import com.plyonest.interval.presentation.ui.theme.IntervalTheme
@@ -51,6 +53,6 @@ class RunTimerViewModel(
 @Composable
 fun PreviewRunTimer() {
     IntervalTheme {
-        RunTimer(koinViewModel())
+        RunTimer(viewModel = RunTimerViewModel(TimerState()))
     }
 }

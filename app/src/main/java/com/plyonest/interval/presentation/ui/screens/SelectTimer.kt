@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
+import com.plyonest.interval.data.Navigator
 import com.plyonest.interval.domain.interfaces.NavigatorInterface
 import com.plyonest.interval.presentation.AppScreen
 import com.plyonest.interval.presentation.constant.COLOR_BACKGROUND_SCREEN
@@ -105,6 +106,6 @@ class SelectTimerViewModel(
 @Composable
 fun PreviewSelectTimer() {
     IntervalTheme {
-        SelectTimer()
+        SelectTimer(SelectTimerViewModel(Navigator()))
     }
 }

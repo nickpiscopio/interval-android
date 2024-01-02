@@ -25,6 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
+import com.plyonest.interval.data.Navigator
+import com.plyonest.interval.data.TimerState
 import com.plyonest.interval.domain.interfaces.NavigatorInterface
 import com.plyonest.interval.domain.interfaces.TimerStateInterface
 import com.plyonest.interval.domain.models.IntervalTimer
@@ -198,6 +200,6 @@ class CreateTimerViewModel(
 @Composable
 fun PreviewCreateTimer() {
     IntervalTheme {
-        CreateTimer(viewModel = koinViewModel())
+        CreateTimer(viewModel = CreateTimerViewModel(TimerState(), Navigator()))
     }
 }
