@@ -1,6 +1,6 @@
 package com.plyonest.interval.presentation.ui.screens
 
-import android.util.Log
+import android.app.Application
 import androidx.compose.foundation.background
 import com.plyonest.interval.R
 
@@ -29,6 +29,7 @@ import com.plyonest.interval.data.Navigator
 import com.plyonest.interval.data.TimerState
 import com.plyonest.interval.domain.interfaces.NavigatorInterface
 import com.plyonest.interval.domain.interfaces.TimerStateInterface
+import com.plyonest.interval.domain.models.Interval
 import com.plyonest.interval.domain.models.IntervalTimer
 import com.plyonest.interval.presentation.AppScreen
 import com.plyonest.interval.presentation.constant.COLOR_BACKGROUND_SCREEN
@@ -59,12 +60,12 @@ fun CreateTimer(viewModel: CreateTimerViewModel = koinViewModel()) {
             verticalArrangement = Arrangement.spacedBy(DIMEN_10)
         ) {
             IntervalInput(
-                name = stringResource(id = R.string.screen_create_timer_interval_high_title),
+                name = viewModel.highIntervalName,
                 intervalTimeInMillis = viewModel.highIntervalTime
             )
 
             IntervalInput(
-                name = stringResource(id = R.string.screen_create_timer_interval_low_title),
+                name = viewModel.lowIntervalName,
                 intervalTimeInMillis = viewModel.lowIntervalTime
             )
         }
@@ -178,9 +179,12 @@ private fun CreateTimerDetailsButtons(
 }
 
 class CreateTimerViewModel(
+    private val application: Application,
     private val timerState: TimerStateInterface,
     private val navigator: NavigatorInterface,
 ): ViewModel() {
+    val highIntervalName = application.applicationContext.getString(R.string.screen_create_timer_interval_high_title)
+    val lowIntervalName = application.applicationContext.getString(R.string.screen_create_timer_interval_low_title)
     var highIntervalTime: MutableState<Long> = mutableLongStateOf(0)
     var lowIntervalTime: MutableState<Long> = mutableLongStateOf(0)
     var name: MutableState<String> = mutableStateOf("")
@@ -188,10 +192,12 @@ class CreateTimerViewModel(
     var totalTime by mutableStateOf("0s")
 
     fun onStartClicked() {
-        Log.d("Interval", name.value)
-        Log.d("Interval", rounds.value)
-        timerState.setState(
-            IntervalTimer(name.value, rounds.value.toInt(), highIntervalTime.value, lowIntervalTime.value))
+        val intervals = mutableListOf<Interval>()
+        for (i in 0..rounds.value.toInt()) {
+            intervals.add(Interval(name = highIntervalName, durationInMillis = highIntervalTime.value))
+            intervals.add(Interval(name = lowIntervalName, durationInMillis = lowIntervalTime.value))
+        }
+        timerState.setState(IntervalTimer(name.value, intervals))
         navigator.navigate(AppScreen.TIMER_RUN.name)
     }
 }
@@ -200,6 +206,6 @@ class CreateTimerViewModel(
 @Composable
 fun PreviewCreateTimer() {
     IntervalTheme {
-        CreateTimer(viewModel = CreateTimerViewModel(TimerState(), Navigator()))
+        CreateTimer(viewModel = CreateTimerViewModel(Application(), TimerState(), Navigator()))
     }
 }

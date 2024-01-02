@@ -7,6 +7,7 @@ import com.plyonest.interval.domain.interfaces.TimerStateInterface
 import com.plyonest.interval.presentation.ui.screens.CreateTimerViewModel
 import com.plyonest.interval.presentation.ui.screens.RunTimerViewModel
 import com.plyonest.interval.presentation.ui.screens.SelectTimerViewModel
+import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -15,6 +16,6 @@ val appModule = module {
     single<TimerStateInterface> { TimerState() }
 
     viewModel { SelectTimerViewModel(get()) }
-    viewModel { CreateTimerViewModel(get(), get()) }
-    viewModel { RunTimerViewModel(get()) }
+    viewModel { CreateTimerViewModel(androidApplication(), get(), get()) }
+    viewModel { RunTimerViewModel(androidApplication(), get()) }
 }

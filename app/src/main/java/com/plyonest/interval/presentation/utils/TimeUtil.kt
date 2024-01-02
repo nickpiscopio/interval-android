@@ -1,5 +1,7 @@
 package com.plyonest.interval.presentation.utils
 
+import java.util.concurrent.TimeUnit
+
 class HoursMinutesSeconds(
     private val hours: String,
     private val minutes: String,
@@ -28,10 +30,6 @@ class HoursMinutesSeconds(
     fun areHoursEmpty(): Boolean {
         return hours.toLong() <= 0
     }
-
-
-
-
 }
 
 class TimeUtil {
@@ -58,6 +56,18 @@ class TimeUtil {
             val hours = hoursArr.joinToString("")
 
             return HoursMinutesSeconds(hours, minutes, seconds)
+        }
+
+        fun convertTimeAsMillisToHms(millis: Long): HoursMinutesSeconds {
+            val hours = TimeUnit.MILLISECONDS.toHours(millis)
+            val minutes = TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(
+                TimeUnit.MILLISECONDS.toHours(millis)
+            )
+            val seconds = TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(
+                TimeUnit.MILLISECONDS.toMinutes(millis)
+            )
+
+            return HoursMinutesSeconds(hours.toString(), minutes.toString(), seconds.toString())
         }
     }
 }
