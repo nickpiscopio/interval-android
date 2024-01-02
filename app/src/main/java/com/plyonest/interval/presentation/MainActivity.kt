@@ -1,13 +1,11 @@
-package com.plyonest.interval
+package com.plyonest.interval.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.plyonest.interval.ui.theme.IntervalTheme
-import dagger.hilt.android.AndroidEntryPoint
+import com.plyonest.interval.presentation.ui.theme.IntervalTheme
 
-@AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

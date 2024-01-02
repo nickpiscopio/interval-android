@@ -1,4 +1,4 @@
-package com.plyonest.interval.ui.theme
+package com.plyonest.interval.presentation.ui.theme
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme

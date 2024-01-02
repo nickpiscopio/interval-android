@@ -1,11 +1,10 @@
-package com.plyonest.interval.ui.fragments
+package com.plyonest.interval.presentation.ui.fragments
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -28,16 +27,16 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import com.plyonest.interval.constant.COLOR_BLACK_100
-import com.plyonest.interval.constant.COLOR_BLACK_40
-import com.plyonest.interval.constant.COLOR_WHITE_100
-import com.plyonest.interval.constant.CORNER_RADIUS_TEXT_FIELD
-import com.plyonest.interval.constant.DIMEN_1
-import com.plyonest.interval.constant.DIMEN_15
-import com.plyonest.interval.constant.DIMEN_2
-import com.plyonest.interval.constant.ELEVATION_SHADOW
-import com.plyonest.interval.utils.HoursMinutesSeconds
-import com.plyonest.interval.utils.TimeUtil
+import com.plyonest.interval.presentation.constant.COLOR_BLACK_100
+import com.plyonest.interval.presentation.constant.COLOR_BLACK_40
+import com.plyonest.interval.presentation.constant.COLOR_WHITE_100
+import com.plyonest.interval.presentation.constant.CORNER_RADIUS_TEXT_FIELD
+import com.plyonest.interval.presentation.constant.DIMEN_1
+import com.plyonest.interval.presentation.constant.DIMEN_15
+import com.plyonest.interval.presentation.constant.DIMEN_2
+import com.plyonest.interval.presentation.constant.ELEVATION_SHADOW
+import com.plyonest.interval.presentation.utils.HoursMinutesSeconds
+import com.plyonest.interval.presentation.utils.TimeUtil
 
 @Composable
 fun IntervalInput(

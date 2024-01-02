@@ -1,4 +1,4 @@
-package com.plyonest.interval.utils
+package com.plyonest.interval.presentation.utils
 
 class HoursMinutesSeconds(
     private val hours: String,

@@ -1,4 +1,4 @@
-package com.plyonest.interval.ui.theme
+package com.plyonest.interval.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

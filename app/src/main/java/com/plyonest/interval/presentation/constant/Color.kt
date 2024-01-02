@@ -1,4 +1,4 @@
-package com.plyonest.interval.constant
+package com.plyonest.interval.presentation.constant
 
 import androidx.compose.ui.graphics.Color
 

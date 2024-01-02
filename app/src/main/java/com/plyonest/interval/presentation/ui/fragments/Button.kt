@@ -1,4 +1,4 @@
-package com.plyonest.interval.ui.fragments
+package com.plyonest.interval.presentation.ui.fragments
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -16,13 +16,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.plyonest.interval.constant.COLOR_BLACK_40
-import com.plyonest.interval.constant.COLOR_BLUE_100
-import com.plyonest.interval.constant.CORNER_RADIUS_BUTTON
-import com.plyonest.interval.constant.DIMEN_15
-import com.plyonest.interval.constant.DIMEN_25
-import com.plyonest.interval.constant.ELEVATION_SHADOW
+import com.plyonest.interval.presentation.constant.COLOR_BLACK_40
+import com.plyonest.interval.presentation.constant.COLOR_BLUE_100
+import com.plyonest.interval.presentation.constant.CORNER_RADIUS_BUTTON
+import com.plyonest.interval.presentation.constant.DIMEN_15
+import com.plyonest.interval.presentation.constant.DIMEN_25
+import com.plyonest.interval.presentation.constant.ELEVATION_SHADOW
 
 @Composable
 fun IntervalButtonPrimary(

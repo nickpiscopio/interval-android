@@ -1,4 +1,4 @@
-package com.plyonest.interval.ui.screens
+package com.plyonest.interval.presentation.ui.screens
 
 import androidx.compose.foundation.background
 import com.plyonest.interval.R
@@ -11,23 +11,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.plyonest.interval.AppScreen
-import com.plyonest.interval.constant.COLOR_BACKGROUND_SCREEN
-import com.plyonest.interval.constant.COLOR_BLACK_80
-import com.plyonest.interval.constant.DIMEN_15
-import com.plyonest.interval.constant.DIMEN_20
-import com.plyonest.interval.ui.fragments.IntervalButtonPrimary
-import com.plyonest.interval.ui.theme.IntervalTheme
+import com.plyonest.interval.domain.interfaces.NavigatorInterface
+import com.plyonest.interval.presentation.AppScreen
+import com.plyonest.interval.presentation.constant.COLOR_BACKGROUND_SCREEN
+import com.plyonest.interval.presentation.constant.COLOR_BLACK_80
+import com.plyonest.interval.presentation.constant.DIMEN_15
+import com.plyonest.interval.presentation.constant.DIMEN_20
+import com.plyonest.interval.presentation.ui.fragments.IntervalButtonPrimary
+import com.plyonest.interval.presentation.ui.theme.IntervalTheme
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SelectTimer(
-    viewModel: SelectTimerViewModel
+    viewModel: SelectTimerViewModel = koinViewModel()
 ) {
     if (viewModel.hasTimers()) {
         TimersView(viewModel = viewModel)
@@ -92,10 +91,10 @@ private fun NoTimersView(
 }
 
 class SelectTimerViewModel(
-    private var navController: NavHostController
+    private val navigator: NavigatorInterface,
 ): ViewModel() {
     fun onCreateTimerClicked() {
-        navController.navigate(AppScreen.TIMER_CREATE.name)
+        navigator.navigate(AppScreen.TIMER_CREATE.name)
     }
     fun hasTimers(): Boolean {
         return true
@@ -106,6 +105,6 @@ class SelectTimerViewModel(
 @Composable
 fun PreviewSelectTimer() {
     IntervalTheme {
-        SelectTimer(SelectTimerViewModel(rememberNavController()))
+        SelectTimer()
     }
 }

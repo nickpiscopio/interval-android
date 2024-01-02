@@ -1,4 +1,4 @@
-package com.plyonest.interval.ui.screens
+package com.plyonest.interval.presentation.ui.screens
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -11,44 +11,39 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.plyonest.interval.AppScreen
-import com.plyonest.interval.constant.COLOR_BACKGROUND_SCREEN
-import com.plyonest.interval.constant.COLOR_BLACK_20
-import com.plyonest.interval.constant.COLOR_BLACK_80
-import com.plyonest.interval.constant.COLOR_WHITE_100
-import com.plyonest.interval.constant.DIMEN_10
-import com.plyonest.interval.constant.DIMEN_15
-import com.plyonest.interval.constant.DIMEN_25
-import com.plyonest.interval.ui.fragments.IntervalButtonPrimary
-import com.plyonest.interval.ui.fragments.IntervalInput
-import com.plyonest.interval.ui.fragments.IntervalTextField
-import com.plyonest.interval.ui.theme.IntervalTheme
+import com.plyonest.interval.domain.interfaces.NavigatorInterface
+import com.plyonest.interval.domain.interfaces.TimerStateInterface
+import com.plyonest.interval.domain.models.IntervalTimer
+import com.plyonest.interval.presentation.AppScreen
+import com.plyonest.interval.presentation.constant.COLOR_BACKGROUND_SCREEN
+import com.plyonest.interval.presentation.constant.COLOR_BLACK_20
+import com.plyonest.interval.presentation.constant.COLOR_BLACK_80
+import com.plyonest.interval.presentation.constant.COLOR_WHITE_100
+import com.plyonest.interval.presentation.constant.DIMEN_10
+import com.plyonest.interval.presentation.constant.DIMEN_15
+import com.plyonest.interval.presentation.constant.DIMEN_25
+import com.plyonest.interval.presentation.ui.fragments.IntervalButtonPrimary
+import com.plyonest.interval.presentation.ui.fragments.IntervalInput
+import com.plyonest.interval.presentation.ui.fragments.IntervalTextField
+import com.plyonest.interval.presentation.ui.theme.IntervalTheme
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun CreateTimer(
-    viewModel: CreateTimerViewModel
-) {
+fun CreateTimer(viewModel: CreateTimerViewModel = koinViewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -181,7 +176,8 @@ private fun CreateTimerDetailsButtons(
 }
 
 class CreateTimerViewModel(
-    private var navController: NavHostController
+    private val timerState: TimerStateInterface,
+    private val navigator: NavigatorInterface,
 ): ViewModel() {
     var highIntervalTime: MutableState<Long> = mutableLongStateOf(0)
     var lowIntervalTime: MutableState<Long> = mutableLongStateOf(0)
@@ -192,7 +188,9 @@ class CreateTimerViewModel(
     fun onStartClicked() {
         Log.d("Interval", name.value)
         Log.d("Interval", rounds.value)
-        navController.navigate(AppScreen.TIMER_RUN.name)
+        timerState.setState(
+            IntervalTimer(name.value, rounds.value.toInt(), highIntervalTime.value, lowIntervalTime.value))
+        navigator.navigate(AppScreen.TIMER_RUN.name)
     }
 }
 
@@ -200,6 +198,6 @@ class CreateTimerViewModel(
 @Composable
 fun PreviewCreateTimer() {
     IntervalTheme {
-        CreateTimer(viewModel = CreateTimerViewModel(rememberNavController()))
+        CreateTimer(viewModel = koinViewModel())
     }
 }

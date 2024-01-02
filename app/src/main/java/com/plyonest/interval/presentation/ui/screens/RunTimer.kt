@@ -1,27 +1,24 @@
-package com.plyonest.interval.ui.screens
+package com.plyonest.interval.presentation.ui.screens
 
-import com.plyonest.interval.R
-
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.plyonest.interval.constant.DIMEN_25
-import com.plyonest.interval.ui.theme.IntervalTheme
+import com.plyonest.interval.domain.interfaces.TimerStateInterface
+import com.plyonest.interval.presentation.constant.DIMEN_25
+import com.plyonest.interval.presentation.ui.theme.IntervalTheme
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun RunTimer(
-    viewModel: RunTimerViewModel
-) {
+fun RunTimer(viewModel: RunTimerViewModel = koinViewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -32,19 +29,28 @@ fun RunTimer(
         Text(
             text = "Run Timer Screen"
         )
+
+        Button(onClick = {
+            viewModel.print()
+        }) {
+            Text("Click me")
+        }
     }
 }
 
 class RunTimerViewModel(
-    private var navController: NavHostController
+    private val timerState: TimerStateInterface
 ): ViewModel() {
 
+    fun print() {
+        Log.d("Interval", timerState.getState().toString())
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewRunTimer() {
     IntervalTheme {
-        RunTimer(RunTimerViewModel(rememberNavController()))
+        RunTimer(koinViewModel())
     }
 }

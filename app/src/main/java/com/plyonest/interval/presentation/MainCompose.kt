@@ -1,4 +1,4 @@
-package com.plyonest.interval
+package com.plyonest.interval.presentation
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
@@ -12,17 +12,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.plyonest.interval.ui.screens.CreateTimer
-import com.plyonest.interval.ui.screens.CreateTimerViewModel
-import com.plyonest.interval.ui.screens.RunTimer
-import com.plyonest.interval.ui.screens.RunTimerViewModel
-import com.plyonest.interval.ui.screens.SelectTimer
-import com.plyonest.interval.ui.screens.SelectTimerViewModel
+import com.plyonest.interval.R
+import com.plyonest.interval.domain.interfaces.NavigatorInterface
+import com.plyonest.interval.presentation.ui.screens.CreateTimer
+import com.plyonest.interval.presentation.ui.screens.RunTimer
+import com.plyonest.interval.presentation.ui.screens.SelectTimer
+import org.koin.compose.koinInject
 
 enum class AppScreen(@StringRes val title: Int? = null) {
     TIMER_SELECT(title = R.string.screen_select_timer_title),
@@ -59,8 +58,10 @@ fun NavBar(
 
 @Composable
 fun MainCompose (
-    navController: NavHostController = rememberNavController()
+    navigator: NavigatorInterface = koinInject()
 ) {
+    navigator.setNavigationController(rememberNavController())
+    val navController = navigator.getNavigationController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = AppScreen.valueOf(
         backStackEntry?.destination?.route ?: AppScreen.TIMER_SELECT.name
@@ -81,13 +82,13 @@ fun MainCompose (
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(route = AppScreen.TIMER_SELECT.name) {
-                SelectTimer(SelectTimerViewModel(navController))
+                SelectTimer()
             }
             composable(route = AppScreen.TIMER_CREATE.name) {
-                CreateTimer(CreateTimerViewModel(navController))
+                CreateTimer()
             }
             composable(route = AppScreen.TIMER_RUN.name) {
-                RunTimer(RunTimerViewModel(navController))
+                RunTimer()
             }
         }
     }

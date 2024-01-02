@@ -1,4 +1,4 @@
-package com.plyonest.interval.ui.fragments
+package com.plyonest.interval.presentation.ui.fragments
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -20,8 +20,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.plyonest.interval.constant.COLOR_BLACK_100
-import com.plyonest.interval.constant.CORNER_RADIUS_TEXT_FIELD
+import com.plyonest.interval.presentation.constant.COLOR_BLACK_100
+import com.plyonest.interval.presentation.constant.CORNER_RADIUS_TEXT_FIELD
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
