@@ -69,5 +69,14 @@ class TimeUtil {
 
             return HoursMinutesSeconds(hours.toString(), minutes.toString(), seconds.toString())
         }
+
+        fun convertTimeAsMillisToHumanReadableString(millis: Long): String {
+            val hms = convertTimeAsMillisToHms(millis)
+            val hours = if (hms.areHoursEmpty()) "" else hms.getHours() + "h"
+            val minutes = if (hms.areMinutesEmpty()) "" else hms.getMinutes() + "m"
+            val seconds = if (hms.areSecondsEmpty()) "" else hms.getSeconds() + "m"
+
+            return "$hours $minutes $seconds"
+        }
     }
 }

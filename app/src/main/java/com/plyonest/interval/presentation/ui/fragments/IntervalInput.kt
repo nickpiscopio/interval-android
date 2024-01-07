@@ -25,16 +25,20 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.plyonest.interval.presentation.constant.COLOR_BLACK_100
 import com.plyonest.interval.presentation.constant.COLOR_BLACK_40
+import com.plyonest.interval.presentation.constant.COLOR_ERROR
 import com.plyonest.interval.presentation.constant.COLOR_WHITE_100
 import com.plyonest.interval.presentation.constant.CORNER_RADIUS_TEXT_FIELD
 import com.plyonest.interval.presentation.constant.DIMEN_1
 import com.plyonest.interval.presentation.constant.DIMEN_15
 import com.plyonest.interval.presentation.constant.DIMEN_2
 import com.plyonest.interval.presentation.constant.ELEVATION_SHADOW
+import com.plyonest.interval.presentation.constant.IntervalColor
+import com.plyonest.interval.presentation.constant.IntervalColor.Companion.getTextFieldColor
 import com.plyonest.interval.presentation.utils.HoursMinutesSeconds
 import com.plyonest.interval.presentation.utils.TimeUtil
 
@@ -42,6 +46,7 @@ import com.plyonest.interval.presentation.utils.TimeUtil
 fun IntervalInput(
     name: String,
     intervalTimeInMillis: MutableState<Long>,
+    error: MutableState<Boolean>
 ) {
     val hms = remember { mutableStateOf(HoursMinutesSeconds("00", "00", "00")) }
     val timeAsString = remember { mutableStateOf("") }
@@ -84,12 +89,12 @@ fun IntervalInput(
                         Text(
                             text = hms.value.getHours(),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = if (hms.value.areHoursEmpty()) COLOR_BLACK_40 else COLOR_BLACK_100
+                            color = getTextFieldColor(error.value, !hms.value.areHoursEmpty())
                         )
                         Text(
                             text = "h",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = if (hms.value.areHoursEmpty()) COLOR_BLACK_40 else COLOR_BLACK_100
+                            color = getTextFieldColor(error.value, !hms.value.areHoursEmpty())
                         )
                     }
 
@@ -101,12 +106,12 @@ fun IntervalInput(
                         Text(
                             text = hms.value.getMinutes(),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = if (hms.value.areMinutesEmpty()) COLOR_BLACK_40 else COLOR_BLACK_100
+                            color = getTextFieldColor(error.value, !hms.value.areMinutesEmpty())
                         )
                         Text(
                             text = "m",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = if (hms.value.areMinutesEmpty()) COLOR_BLACK_40 else COLOR_BLACK_100
+                            color = getTextFieldColor(error.value, !hms.value.areMinutesEmpty())
                         )
                     }
 
@@ -118,12 +123,12 @@ fun IntervalInput(
                         Text(
                             text = hms.value.getSeconds(),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = if (hms.value.areSecondsEmpty()) COLOR_BLACK_40 else COLOR_BLACK_100
+                            color = getTextFieldColor(error.value, !hms.value.areSecondsEmpty())
                         )
                         Text(
                             text = "s",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = if (hms.value.areSecondsEmpty()) COLOR_BLACK_40 else COLOR_BLACK_100
+                            color = getTextFieldColor(error.value, !hms.value.areSecondsEmpty())
                         )
                     }
                 }
@@ -155,5 +160,17 @@ fun PreviewIntervalInput() {
     IntervalInput(
         name = "High Interval",
         intervalTimeInMillis = mutableLongStateOf(5039),
+        error = mutableStateOf(false)
+    )
+}
+
+@SuppressLint("UnrememberedMutableState")
+@Preview(showBackground = true)
+@Composable
+fun PreviewIntervalInputWithError() {
+    IntervalInput(
+        name = "High Interval",
+        intervalTimeInMillis = mutableLongStateOf(5039),
+        error = mutableStateOf(true)
     )
 }

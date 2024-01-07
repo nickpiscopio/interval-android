@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -43,6 +44,7 @@ import com.plyonest.interval.presentation.ui.fragments.IntervalButtonPrimary
 import com.plyonest.interval.presentation.ui.fragments.IntervalInput
 import com.plyonest.interval.presentation.ui.fragments.IntervalTextField
 import com.plyonest.interval.presentation.ui.theme.IntervalTheme
+import com.plyonest.interval.presentation.utils.TimeUtil
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -61,12 +63,14 @@ fun CreateTimer(viewModel: CreateTimerViewModel = koinViewModel()) {
         ) {
             IntervalInput(
                 name = viewModel.highIntervalName,
-                intervalTimeInMillis = viewModel.highIntervalTime
+                intervalTimeInMillis = viewModel.highIntervalTime,
+                error = viewModel.highIntervalTimeError
             )
 
             IntervalInput(
                 name = viewModel.lowIntervalName,
-                intervalTimeInMillis = viewModel.lowIntervalTime
+                intervalTimeInMillis = viewModel.lowIntervalTime,
+                error = viewModel.lowIntervalTimeError
             )
         }
 
@@ -101,14 +105,16 @@ private fun CreateTimerDetailsInputs(
         IntervalTextField(
             modifier = Modifier.weight(2f),
             text = viewModel.name,
-            placeholder = stringResource(id = R.string.screen_create_timer_name_title)
+            placeholder = stringResource(id = R.string.screen_create_timer_name_title),
+            error = viewModel.nameError
         )
 
         IntervalTextField(
             modifier = Modifier.weight(1f),
             text = viewModel.rounds,
             placeholder = stringResource(id = R.string.screen_create_timer_rounds_title),
-            includePrefix = true
+            includePrefix = true,
+            error = viewModel.roundsError
         )
     }
 }
@@ -117,7 +123,6 @@ private fun CreateTimerDetailsInputs(
 private fun CreateTimerDetailsTotalTime(
     viewModel: CreateTimerViewModel
 ) {
-
     Row(
         horizontalArrangement = Arrangement.spacedBy(DIMEN_15)
     ) {
@@ -130,12 +135,14 @@ private fun CreateTimerDetailsTotalTime(
         ) {
             Text(
                 text = stringResource(id = R.string.screen_create_timer_time_title),
-                color = COLOR_BLACK_80
+                color = COLOR_BLACK_80,
+                style = MaterialTheme.typography.labelMedium
             )
 
             Text(
                 text = viewModel.totalTime,
-                color = COLOR_BLACK_80
+                color = COLOR_BLACK_80,
+                style = MaterialTheme.typography.labelMedium
             )
         }
     }
@@ -160,7 +167,6 @@ private fun CreateTimerDetailsButtons(
         Row(
             horizontalArrangement = Arrangement.spacedBy(DIMEN_10)
         ) {
-
             IntervalButtonPrimary(
                 text = "Save",
                 onClick = {
@@ -189,9 +195,38 @@ class CreateTimerViewModel(
     var lowIntervalTime: MutableState<Long> = mutableLongStateOf(0)
     var name: MutableState<String> = mutableStateOf("")
     var rounds: MutableState<String> = mutableStateOf("")
-    var totalTime by mutableStateOf("0s")
+    var totalTime by getTotalTime()
+    var highIntervalTimeError: MutableState<Boolean> = mutableStateOf(false)
+    var lowIntervalTimeError: MutableState<Boolean> = mutableStateOf(false)
+    var nameError: MutableState<Boolean> = mutableStateOf(false)
+    var roundsError: MutableState<Boolean> = mutableStateOf(false)
 
     fun onStartClicked() {
+        var hasError = false
+        if (highIntervalTime.value <= 0) {
+            highIntervalTimeError.value = true
+            hasError = true
+        }
+
+        if (lowIntervalTime.value <= 0) {
+            lowIntervalTimeError.value = true
+            hasError = true
+        }
+
+        if (name.value.isEmpty()) {
+            nameError.value = true
+            hasError = true
+        }
+
+        if (rounds.value.isEmpty()) {
+            roundsError.value = true
+            hasError = true
+        }
+
+        if (hasError) {
+            return
+        }
+
         val intervals = mutableListOf<Interval>()
         for (i in 0..rounds.value.toInt()) {
             intervals.add(Interval(name = highIntervalName, durationInMillis = highIntervalTime.value))
@@ -199,6 +234,13 @@ class CreateTimerViewModel(
         }
         timerState.setState(IntervalTimer(name.value, intervals))
         navigator.navigate(AppScreen.TIMER_RUN.name)
+    }
+
+    private fun getTotalTime(): MutableState<String> {
+        val rounds: Long = if (rounds.value.isEmpty()) 0 else rounds.value.toLong()
+        val totalTimeInMillis: Long = (highIntervalTime.value + lowIntervalTime.value) * rounds
+        val timeAsHumanReadable = TimeUtil.convertTimeAsMillisToHumanReadableString(totalTimeInMillis)
+        return mutableStateOf(timeAsHumanReadable)
     }
 }
 

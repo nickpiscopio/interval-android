@@ -21,7 +21,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.plyonest.interval.presentation.constant.COLOR_BLACK_100
+import com.plyonest.interval.presentation.constant.COLOR_BLACK_40
+import com.plyonest.interval.presentation.constant.COLOR_ERROR
 import com.plyonest.interval.presentation.constant.CORNER_RADIUS_TEXT_FIELD
+import com.plyonest.interval.presentation.constant.IntervalColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,7 +32,8 @@ fun IntervalTextField(
     modifier: Modifier,
     text: MutableState<String>,
     placeholder: String,
-    includePrefix: Boolean = false
+    includePrefix: Boolean = false,
+    error: MutableState<Boolean>
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     BasicTextField(
@@ -48,6 +52,7 @@ fun IntervalTextField(
             innerTextField = innerTextField,
             enabled = true,
             singleLine = true,
+            isError = error.value,
             interactionSource = interactionSource,
             visualTransformation = VisualTransformation.None,
             label = {
@@ -57,15 +62,23 @@ fun IntervalTextField(
             },
             leadingIcon = if (includePrefix) {
                 {
-                    Text("x")
+                    Text(text = "x", color = IntervalColor.getTextFieldColor(hasError = error.value, hasValue = text.value.isNotEmpty()))
                 }
             } else null,
             container = {
                 OutlinedTextFieldDefaults.ContainerBox(
                     enabled = true,
-                    isError = false,
+                    isError = error.value,
                     interactionSource = interactionSource,
-                    colors = OutlinedTextFieldDefaults.colors(),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        errorBorderColor = COLOR_ERROR,
+                        errorTextColor = COLOR_ERROR,
+                        errorLeadingIconColor = COLOR_ERROR,
+                        unfocusedLeadingIconColor = COLOR_BLACK_40,
+                        focusedBorderColor = COLOR_BLACK_100,
+                        unfocusedBorderColor = COLOR_BLACK_40,
+                        unfocusedLabelColor = COLOR_BLACK_40
+                    ),
                     shape = RoundedCornerShape(CORNER_RADIUS_TEXT_FIELD),
                     focusedBorderThickness = 2.dp,
                     unfocusedBorderThickness = 2.dp
@@ -81,8 +94,45 @@ fun IntervalTextField(
 fun PreviewIntervalTextField() {
     IntervalTextField(
         modifier = Modifier,
+        text = mutableStateOf(""),
+        placeholder = "Name",
+        error = mutableStateOf(false)
+    )
+}
+
+@SuppressLint("UnrememberedMutableState")
+@Preview(showBackground = true)
+@Composable
+fun PreviewIntervalTextFieldWithText() {
+    IntervalTextField(
+        modifier = Modifier,
         text = mutableStateOf("Name"),
-        placeholder = "Name"
+        placeholder = "Name",
+        error = mutableStateOf(false)
+    )
+}
+
+@SuppressLint("UnrememberedMutableState")
+@Preview(showBackground = true)
+@Composable
+fun PreviewIntervalTextFieldWithError() {
+    IntervalTextField(
+        modifier = Modifier,
+        text = mutableStateOf(""),
+        placeholder = "Name",
+        error = mutableStateOf(true)
+    )
+}
+
+@SuppressLint("UnrememberedMutableState")
+@Preview(showBackground = true)
+@Composable
+fun PreviewIntervalTextFieldWithErrorWithText() {
+    IntervalTextField(
+        modifier = Modifier,
+        text = mutableStateOf("Name"),
+        placeholder = "Name",
+        error = mutableStateOf(true)
     )
 }
 
@@ -92,8 +142,48 @@ fun PreviewIntervalTextField() {
 fun PreviewIntervalTextFieldWithPrefix() {
     IntervalTextField(
         modifier = Modifier,
+        text = mutableStateOf(""),
+        placeholder = "Rounds",
+        includePrefix = true,
+        error = mutableStateOf(false)
+    )
+}
+
+@SuppressLint("UnrememberedMutableState")
+@Preview(showBackground = true)
+@Composable
+fun PreviewIntervalTextFieldWithPrefixAndError() {
+    IntervalTextField(
+        modifier = Modifier,
+        text = mutableStateOf(""),
+        placeholder = "Rounds",
+        includePrefix = true,
+        error = mutableStateOf(true)
+    )
+}
+
+@SuppressLint("UnrememberedMutableState")
+@Preview(showBackground = true)
+@Composable
+fun PreviewIntervalTextFieldWithPrefixAndText() {
+    IntervalTextField(
+        modifier = Modifier,
         text = mutableStateOf("Rounds"),
         placeholder = "Rounds",
-        includePrefix = true
+        includePrefix = true,
+        error = mutableStateOf(false)
+    )
+}
+
+@SuppressLint("UnrememberedMutableState")
+@Preview(showBackground = true)
+@Composable
+fun PreviewIntervalTextFieldWithPrefixAndTextAndError() {
+    IntervalTextField(
+        modifier = Modifier,
+        text = mutableStateOf("Rounds"),
+        placeholder = "Rounds",
+        includePrefix = true,
+        error = mutableStateOf(true)
     )
 }
